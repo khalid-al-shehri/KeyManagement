@@ -1,0 +1,74 @@
+services:
+  # MSSQL Database
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: keymanagement-mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Test123!@#
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - keymanagement-network
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: keymanagement-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - keymanagement-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Backend API
+  backend:
+    build:
+      context: ./Back-end
+      dockerfile: Dockerfile
+    container_name: keymanagement-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_HTTPS_PORT=
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=KeyManagement;User Id=sa;Password=Test123!@#;TrustServerCertificate=True
+      - ConnectionStrings__RedisConnection=redis:6379
+    ports:
+      - "63768:80"
+    depends_on:
+      - mssql
+      - redis
+    networks:
+      - keymanagement-network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./Front-end
+      dockerfile: Dockerfile
+    container_name: keymanagement-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - keymanagement-network
+    restart: unless-stopped
+
+# Networks
+networks:
+  keymanagement-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  mssql_data:
+    driver: local
+  redis_data:
+    driver: local
