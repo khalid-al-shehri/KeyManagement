@@ -70,7 +70,7 @@ KeyManagement/
 
 ### 1. Clone and Navigate to Project
 ```bash
-git clone <repository-url>
+git clone https://github.com/khalid-al-shehri/KeyManagement.git
 cd KeyManagement
 ```
 
