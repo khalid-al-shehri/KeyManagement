@@ -2,6 +2,37 @@
 
 A full-stack key management application built with .NET 8 backend API and HTML/CSS/JS frontend, using MSSQL database and Redis cache.
 
+## 📸 Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="./images/1.png" width="400"/>
+        <br/>
+        <sub><b>Key Management Dashboard</b></sub>
+      </td>
+      <td align="center">
+        <img src="./images/2.png" width="400"/>
+        <br/>
+        <sub><b>Create New Key</b></sub>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="./images/3.png" width="400"/>
+        <br/>
+        <sub><b>Revoke Key</b></sub>
+      </td>
+      <td align="center">
+        <img src="./images/4.png" width="400"/>
+        <br/>
+        <sub><b>Docker Containerization</b></sub>
+      </td>
+    </tr>
+  </table>
+</div>
+
 ## Architecture
 
 - **Backend**: .NET 8 Web API with Clean Architecture (Api, Application, Domain, Infrastructure layers)
